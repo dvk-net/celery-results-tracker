@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Track status</title>
+</head>
+<body>
+    <button onclick="startTask()">Start a task!!</button>
+    <h1>Task tracker</h1>
+    <div>
+        <ul id="tasks"></ul>
+    </div>
+    <script>
+        let taskList = document.getElementById('tasks');
+        function deleter(el) {
+            console.log('remove el', el.id);
+            taskList.removeChild(el)
+        }
+        function checkker(tasks_el) {
+            axios.get(`http://127.0.0.1:8000/gettask/?task_id=${tasks_el.id}`)
+            .then((res) => {
+                console.log(res.data, "CHECKED Status");
+                if (res.data == "SUCCESS") {
+                  tasks_el.style.color = "green"
+                  tasks_el.innerHTML = tasks_el.id + " SUCCESS"
+                  console.log(res.data, `TASK: ${tasks_el.id} changin to success Status`);
+                  setTimeout(deleter, 3000, tasks_el);
+                } else {
+                    setTimeout(checkker, 1000, tasks_el);
+                    console.log(`TASK: ${tasks_el.id} Wait`);
+
+                }
+            })
+        }
+        function startTask() {
+            axios.get("http://127.0.0.1:8000/settask")
+            .then((res) => {
+                console.log(res.data);
+                let taskitem = document.createElement("li");
+                taskitem.id = res.data
+                taskitem.innerHTML = res.data + " WORKING"
+                taskitem.style.color = "red"
+                taskList.appendChild(taskitem)
+                setTimeout(checkker, 1000, taskitem);
+            })
+        }
+    </script>
+</body>
+</html>
