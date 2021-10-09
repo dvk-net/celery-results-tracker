@@ -1,8 +1,8 @@
 # Celery Django Funny Cats Downloader
 
-## Demo project to demonstrate how Celery + Redis + Django work
+## Demo project to demonstrate how to track Celery tasks readyness.
 
-## [Video explanation](https://youtu.be/EUZJcy_dfCs)
+## [Video explanation]()
 
 ### Celery in general
 ![celery at general](./what_is_celery.png)
